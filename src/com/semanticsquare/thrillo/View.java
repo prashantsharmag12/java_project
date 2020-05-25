@@ -80,7 +80,7 @@ public class View {
 		
 	}
 
-	private static String getKidFriendlyStatusDecision(Bookmark bookmark) {
+	private static KidFriendlyStatus getKidFriendlyStatusDecision(Bookmark bookmark) {
       
 		
 		double val = Math.random();

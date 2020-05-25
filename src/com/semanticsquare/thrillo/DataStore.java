@@ -12,7 +12,9 @@ import java.util.List;
 
 import com.semanticsquare.thrillo.constants.BookGenre;
 import com.semanticsquare.thrillo.constants.Gender;
+import com.semanticsquare.thrillo.constants.KidFriendlyStatus;
 import com.semanticsquare.thrillo.constants.MovieGenre;
+import com.semanticsquare.thrillo.constants.UserType;
 import com.semanticsquare.thrillo.entities.Bookmark;
 import com.semanticsquare.thrillo.entities.User;
 import com.semanticsquare.thrillo.entities.UserBookmark;
@@ -107,11 +109,54 @@ public class DataStore {
 		
 	}
 
-	private static void loadWebLinks(Statement stmt) {
+	private static void loadWebLinks(Statement smt) {
+		
+		String query = "select * from Weblink";
+		try {
+			ResultSet rs = smt.executeQuery(query);
+			List<Bookmark> bookmarkList = new ArrayList<>();
+			while (rs.next()) {
+				long id = rs.getLong(1);
+				String title = rs.getString(2);
+				String url = rs.getString(3);
+				String host = rs.getString(4);
+				int kidFriendlyStatusId = rs.getInt(5);
+				KidFriendlyStatus kidFriendlyStatus = KidFriendlyStatus.values()[kidFriendlyStatusId];
+				Date createdDate = rs.getDate("created_date");
+				Bookmark bookmark = BookmarkManager.getInstance().createWebLink(id, title, url, host, "");
+				bookmarkList.add(bookmark);
+			}
+			bookmarks.add(bookmarkList);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 	}
 
-	private static void loadUsers(Statement stmt) {
+	private static void loadUsers(Statement smt) {
+		
+		String query = "select * from User";
+		try {
+			ResultSet rs = smt.executeQuery(query);
+			while (rs.next()) {
+				long id = rs.getLong(1);
+				String email = rs.getString(2);
+				String password = rs.getString(3);
+				String firstName = rs.getString(4);
+				String lastName = rs.getString(5);
+				int genderId = rs.getInt(6);
+				Gender gender = Gender.values()[genderId];
+				int userTypeId = rs.getInt(7);
+				
+				UserType userType = UserType.values()[userTypeId];
+				Date createdDate = rs.getDate("created_date");
+				User user = UserManager.getInstance().createUser(id, email, password, firstName, lastName, gender,
+						userType);
+				users.add(user);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 		
 	}
@@ -119,49 +164,51 @@ public class DataStore {
 	private static void loadUsers() {
 		//String[] data = new String[TOTAL_USER_COUNT];
 		List<String> data = new ArrayList<>();
-    	IOUtil.read(data, "User.txt");
-    	
-    	for (String row : data) {
-    		String[] values = row.split("\t");
-    		
-    		Gender gender = Gender.MALE;
-    		if (values[5].equals("f")) {
-    			gender = Gender.FEMALE;
-    		} else if (values[5].equals("t")) {
-    			gender = Gender.TRANSGENDER;
-    		}
-    			
-    		users.add(UserManager.getInstance().createUser(Long.parseLong(values[0]), values[1], values[2], values[3], values[4], gender, values[6]));
-    	}
+//		String[] data = new String[TOTAL_USER_COUNT];
+		String fileName = "User.txt";
+		IOUtil.read(data, fileName);
+		for (String row : data) {
+			String[] values = row.split("\t");
+			Gender gender = Gender.MALE;
+			if (values[5].equals("F"))
+				gender = Gender.FEMALE;
+			else if (values[5].equals("T"))
+				gender = Gender.TRANSGENDER;
+			User user = UserManager.getInstance().createUser(Long.parseLong(values[0]), values[1], values[2], values[3],
+					values[4], gender, UserType.valueOf(values[6]));
+			users.add(user);
+		}
 	}
 	
 	private static void loadWebLinks() {
 		
 		List<String> data = new ArrayList<>();
-    	IOUtil.read(data, "WebLink.txt");
-    	
-    	List<Bookmark> bookmarkList = new ArrayList<>();
-    	
-    	for (String row : data) {
-    		String[] values = row.split("\t");
-    		bookmarkList.add(BookmarkManager.getInstance().createWebLink(Long.parseLong(values[0]), values[1], values[2], values[3]/*, values[4]*/));
-    	}
-    	bookmarks.add(bookmarkList);
+		String fileName = "WebLink.txt";
+		IOUtil.read(data, fileName);
+		List<Bookmark> bookmarkList = new ArrayList();
+		for (String row : data) {
+			String[] values = row.split("\t");
+			Bookmark bookmark = BookmarkManager.getInstance().createWebLink(Long.parseLong(values[0]), values[1],
+					values[2], values[3], values[4]);
+			bookmarkList.add(bookmark);
+		}
+		bookmarks.add(bookmarkList);
 	}
 	
-	/*private static void loadMovies() {
+	private static void loadMovies() {
 		List<String> data = new ArrayList<>();
-    	IOUtil.read(data, "Movie.txt");
-    	
-    	List<Bookmark> bookmarkList = new ArrayList<>();
-    	for (String row : data) {
-    		String[] values = row.split("\t");
-    		String[] cast = values[3].split(",");
-    		String[] directors = values[4].split(",");
-    		bookmarkList.add(BookmarkManager.getInstance().createMovie(Long.parseLong(values[0]), values[1], "", Integer.parseInt(values[2]), cast, directors, values[5], Double.parseDouble(values[6])));
-    	}
-    	bookmarks.add(bookmarkList);
-	}*/
+		String fileName = "Movie.txt";
+		IOUtil.read(data, fileName);
+		List<Bookmark> bookmarkList = new ArrayList();
+		for (String row : data) {
+			String[] values = row.split("\t");
+			Bookmark bookmark = BookmarkManager.getInstance().createMovie(Long.parseLong(values[0]), values[1], "",
+					Integer.parseInt(values[2]), values[3].split(","), values[4].split(","),
+					MovieGenre.valueOf(values[5]), Double.parseDouble(values[6]));
+			bookmarkList.add(bookmark);
+		}
+		bookmarks.add(bookmarkList);
+	}
 	
 	private static void loadBooks(Statement stmt) throws SQLException {		    	
 		

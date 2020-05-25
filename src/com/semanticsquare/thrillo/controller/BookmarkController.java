@@ -1,5 +1,6 @@
 package com.semanticsquare.thrillo.controller;
 
+import com.semanticsquare.thrillo.constants.KidFriendlyStatus;
 import com.semanticsquare.thrillo.entities.Bookmark;
 import com.semanticsquare.thrillo.entities.User;
 import com.semanticsquare.thrillo.managers.BookmarkManager;
@@ -22,7 +23,7 @@ public class BookmarkController {
 		
 	}
 
-	public void setKidFriendlyStatus(User user, String kidFriendlyStatus, Bookmark bookmark) {
+	public void setKidFriendlyStatus(User user, KidFriendlyStatus kidFriendlyStatus, Bookmark bookmark) {
 		
 		BookmarkManager.getInstance().setKidFriendlyStatus(user,kidFriendlyStatus, bookmark);
 		// TODO Auto-generated method stub

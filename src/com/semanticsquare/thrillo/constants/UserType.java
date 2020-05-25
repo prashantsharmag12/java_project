@@ -1,14 +1,14 @@
 package com.semanticsquare.thrillo.constants;
 
-public class UserType {
-	
-	private UserType()
-	{
-		
+public enum UserType {
+	USER("user"),
+	EDITOR("editor"),
+	CHIEF_EDITOR("chiefeditor");
+	private UserType(String value) {
+		this.value=value;
 	}
-	
-	public static final String USER = "user";
-	public static final String EDITORIAL = "editorial";
-	public static final String CHIEF_EDITORIAL = "chief_editorial";
-
+	private String value;
+	public String getValue() {
+		return value;
+	}
 }

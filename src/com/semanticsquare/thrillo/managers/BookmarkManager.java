@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 import com.semanticsquare.thrillo.constants.BookGenre;
+import com.semanticsquare.thrillo.constants.KidFriendlyStatus;
 import com.semanticsquare.thrillo.constants.MovieGenre;
 import com.semanticsquare.thrillo.dao.BookMarkDao;
 import com.semanticsquare.thrillo.entities.Book;
@@ -31,7 +32,7 @@ public class BookmarkManager {
 		return instance;
 	}
 	
-	public WebLink createWebLink(long id,String title,String url,String host)
+	/*public WebLink createWebLink(long id,String title,String url,String host)
 	{
 		
 		WebLink weblink = new WebLink();
@@ -42,6 +43,16 @@ public class BookmarkManager {
 		weblink.setHost(host);
 		
 		
+		return weblink;
+	}*/
+	
+	public WebLink createWebLink(long id, String title, String url, String host, String profileUrl) {
+		WebLink weblink = new WebLink();
+		weblink.setId(id);
+		weblink.setTitle(title);
+		weblink.setProfileUrl(profileUrl);
+		weblink.setUrl(url);
+		weblink.setHost(host);
 		return weblink;
 	}
 	
@@ -114,7 +125,7 @@ public class BookmarkManager {
 		
 	}
 
-	public void setKidFriendlyStatus(User user, String kidFriendlyStatus, Bookmark bookmark) {
+	public void setKidFriendlyStatus(User user, KidFriendlyStatus kidFriendlyStatus, Bookmark bookmark) {
 		bookmark.setKidFriendlyStatus(kidFriendlyStatus);
 		bookmark.setKidFriendlyMarkedBy(user);
 		System.out.println("kid friendly status " + kidFriendlyStatus + ", " +"Marked by" + user.getEmail()+ ", "+ bookmark);

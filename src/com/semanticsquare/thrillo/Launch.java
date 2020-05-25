@@ -53,6 +53,8 @@ public class Launch {
 	private static void start() {
 		System.out.println("2. book marking ");
 		
+		
+		
 		for(User user:users)
 		{
 			View.browse(user, bookmarks);

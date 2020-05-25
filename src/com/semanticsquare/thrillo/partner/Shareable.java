@@ -1,4 +1,4 @@
-package com.sematicsquare.thrillo.partner;
+package com.semanticsquare.thrillo.partner;
 
 public interface Shareable {
 	

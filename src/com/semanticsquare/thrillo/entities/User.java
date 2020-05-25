@@ -1,6 +1,7 @@
 package com.semanticsquare.thrillo.entities;
 
 import com.semanticsquare.thrillo.constants.Gender;
+import com.semanticsquare.thrillo.constants.UserType;
 
 public class User {
 
@@ -10,7 +11,7 @@ public class User {
 	private String firstName;
 	private String lastName;
 	private Gender gender;
-	private String userType;
+	private UserType userType;
 
 	public long getId() {
 		return id;
@@ -60,11 +61,11 @@ public class User {
 		this.gender = gender;
 	}
 
-	public String getUserType() {
+	public UserType getUserType() {
 		return userType;
 	}
 
-	public void setUserType(String userType) {
+	public void setUserType(UserType userType) {
 		this.userType = userType;
 	}
 

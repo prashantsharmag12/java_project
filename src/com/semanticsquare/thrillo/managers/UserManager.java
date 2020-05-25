@@ -3,6 +3,7 @@ package com.semanticsquare.thrillo.managers;
 import java.util.List;
 
 import com.semanticsquare.thrillo.constants.Gender;
+import com.semanticsquare.thrillo.constants.UserType;
 import com.semanticsquare.thrillo.dao.UserDao;
 import com.semanticsquare.thrillo.entities.User;
 
@@ -24,7 +25,7 @@ public class UserManager {
 		return dao.getUsers();
 	}
 	
-	public User createUser(long id,String email,String password,String firstName,String lastName,Gender gender,String userType)
+	public User createUser(long id,String email,String password,String firstName,String lastName,Gender gender,UserType userType)
 	{
 		User user = new User();
 		user.setId(id);
